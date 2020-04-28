@@ -25,6 +25,7 @@ static TDNF_ENV gEnv = {0};
 
 uint32_t
 TDNFInit(
+    void
     )
 {
     uint32_t dwError = 0;
@@ -88,6 +89,7 @@ error:
 
 void
 TDNFUninit(
+    void
     )
 {
     pthread_mutex_lock (&gEnv.mutexInitialize);
@@ -211,6 +213,7 @@ TDNFGetSkipProblemOption(
 
     if (strcasecmp(pTdnf->pArgs->ppszCmds[0], "check"))
     {
+        *pdwSkipProblem = SKIPPROBLEM_IGNORE;
         goto cleanup;
     }
 
@@ -900,10 +903,9 @@ TDNFResolve(
 {
     uint32_t dwError = 0;
     Queue queueGoal = {0};
-    char** ppszPkgsNotResolved = NULL;
-
-    PTDNF_SOLVED_PKG_INFO pSolvedPkgInfo = NULL;
     PTDNF_PKG_INFO pPkgInfo = NULL;
+    char **ppszPkgsNotResolved = NULL;
+    PTDNF_SOLVED_PKG_INFO pSolvedPkgInfo = NULL;
 
     if(!pTdnf || !ppSolvedPkgInfo)
     {
@@ -918,7 +920,6 @@ TDNFResolve(
         dwError = ERROR_TDNF_AUTOERASE_UNSUPPORTED;
         BAIL_ON_TDNF_ERROR(dwError);
     }
-
 
     dwError = TDNFValidateCmdArgs(pTdnf);
     BAIL_ON_TDNF_ERROR(dwError);

@@ -223,6 +223,7 @@ error:
 
 void
 TDNFCliShowVersion(
+    void
     )
 {
     printf("%s: %s\n", TDNFGetPackageName(), TDNFGetVersion());

@@ -1655,7 +1655,7 @@ SolvReportProblems(
         type = solver_ruleinfo(pSolv, dwProblemId,
                                &dwSource, &dwTarget, &dwDep);
 
-        if (SkipBasedOnType(type, dwSkipProblem))
+        if (dwSkipProblem != SKIPPROBLEM_IGNORE && SkipBasedOnType(type, dwSkipProblem))
         {
             continue;
         }
@@ -1663,15 +1663,11 @@ SolvReportProblems(
         pszProblem = solver_problemruleinfo2str(pSolv, type, dwSource,
                                                 dwTarget, dwDep);
 
-        if (type == SOLVER_RULE_PKG_REQUIRES)
+        if (dwSkipProblem != SKIPPROBLEM_IGNORE && type == SOLVER_RULE_PKG_REQUIRES)
         {
             if (!check_for_providers(pSack, type, pszProblem, prv_pkgname))
             {
                 continue;
-            }
-            else
-            {
-                dwError = ERROR_TDNF_SOLV_FAILED;
             }
         }
 
@@ -1682,10 +1678,6 @@ SolvReportProblems(
     if (dwError)
     {
         fprintf(stderr, "Found %u problem(s) while resolving\n", total_prblms);
-    }
-    else
-    {
-        printf("No problems found while resolving\n");
     }
 
     return dwError;
