@@ -715,6 +715,11 @@ TDNFTransAddUpgradePkgs(
     PTDNF_PKG_INFO pInfo
     );
 
+uint32_t RpmTransTest(
+    PTDNFRPMTS pTS,
+    PTDNF pTdnf
+    );
+
 uint32_t
 TDNFRunTransaction(
     PTDNFRPMTS pTS,
